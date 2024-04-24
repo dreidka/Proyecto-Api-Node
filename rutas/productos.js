@@ -7,19 +7,22 @@ const data = [
   {id: 3, nombre: 'Zapatos C', valor: 56.0, enStock: true, createdOn: new Date()},
   {id: 4, nombre: 'Zapatos D', valor: 63.8, enStock: true, createdOn: new Date()},
   {id: 5, nombre: 'Zapatos E', valor: 39.4, enStock: false, createdOn: new Date()},
+  //Creacion de lista de objetos json con los productos de la tienda
 ];
 
 router.get('/', function (req, res) {
   res.status(200).json(data);
+  //Retorna todos los productos de la lista data (Es necesario ingresar la palabra productos en la url)
 });
 
 router.get('/:id', function (req, res) {
   let found = data.find(function (item) {
     return item.id === parseInt(req.params.id);
   });
+  //Encuentra el item con cierto id especificado en el id de la url
 
   if (found) {
-    //TODO: Retornar los valores de la variable found
+    //Retornar los valores de la variable found
     res.status(200).json(found);
   } else {
     res.sendStatus(404);
@@ -32,7 +35,7 @@ router.post('/', function (req, res) {
     let orderNums = data.map(item => item.order);
   
     let newId = itemIds.length > 0 ? Math.max.apply(Math, itemIds) + 1 : 1;
-  
+  //Realiza un mapeo de la lista de datos y determinando la cantidad maxima de objetos suma uno nuevo
     let newItem ={
         id:newId,
         nombre:req.body.nombre,
@@ -40,9 +43,9 @@ router.post('/', function (req, res) {
         enStock:false,
         createdOn:new Date()
     }
-  
+  //Se crea el nuevo item en la lista con formato json donde se especifica su nobmre y valor
     data.push(newItem);
-  
+  //Envia este nuevo item a la lista de datos
     res.status(201).json(newItem);
   });
 
@@ -50,6 +53,7 @@ router.put('/:id', function (req, res) {
     let found = data.find(function (item) {
       return item.id === parseInt(req.params.id);
     });
+    //Busca el item en la lista de acuerdo al id que se encuentra en la url
   
     if (found) {
     let updated ={
@@ -58,10 +62,11 @@ router.put('/:id', function (req, res) {
         valor:req.body.valor,
         enStock:req.body.enStock,
     }
+    //Si se encuentra, se crea un nuevo item llamado updated
         let targetIndex = data.indexOf(found);
     
         data.splice(targetIndex, 1, updated);
-    
+    //Busca la posicion del item que se desea actualizar y se remplaza con el nuevo 
       res.sendStatus(204);
     } else {
         
@@ -73,10 +78,11 @@ router.put('/:id', function (req, res) {
     let found = data.find(function (item) {
       return item.id === parseInt(req.params.id);
     });
+    //Como se hizo anteriormente se encuentra el item con cierto id
   
     if (found) {
       let targetIndex = data.indexOf(found);
-  
+  //Una vez encontrado se remplaza en la lista de productos por un espacio vacio
       data.splice(targetIndex, 1);
     }
   
